@@ -781,6 +781,10 @@ func unitToExporterConfig(unit component.Unit, outputName string, exporterType o
 		if queue, ok := queueSettings["queue"].(map[string]any); ok {
 			queueSettings = queue
 		}
+		delete(queueSettings, "persistent")
+		if len(queueSettings) == 0 {
+			queueSettings = nil
+		}
 	}
 
 	// if there's an otel override section for the exporter, we should apply it
