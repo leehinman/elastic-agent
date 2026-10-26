@@ -351,6 +351,10 @@ func ESToOTelConfig(output *config.C, outputName string, logger *logp.Logger) (e
 		extensionID.String(): extensionConfig,
 	}
 
+	if err := applyPersistentQueue(output, outputName, otelYAMLCfg, extensionCfg); err != nil {
+		return nil, nil, nil, fmt.Errorf("error configuring persistent queue for output: %s, error: %w", outputName, err)
+	}
+
 	// add authenticator to ES config
 	otelYAMLCfg["auth"] = map[string]any{
 		"authenticator": extensionID.String(),
